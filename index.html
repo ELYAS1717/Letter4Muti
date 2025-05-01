@@ -1,190 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" , initial-scale=1.0">
-    <title>Valentine's Letter</title>
-    <style>
-        body {
-            background-color: #ffe4e1;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 400px;
-            min-height: 100vh; /* Tambahkan tinggi minimum untuk memastikan halaman dapat digulir */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            overflow-y: auto;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Letter For Muti</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #ffe4e1;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 400px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
 
-        .envelope {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background: #ffcccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            margin-top: 50px;
-        }
+    .envelope {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      overflow: visible;
+      box-shadow: 0 4px 8px rgba(34, 28, 28, 0.2);
+      cursor: pointer;
+      margin-top: 50px;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        #ff6f61 0px,
+        #ff6f61 10px,
+        #fff 10px,
+        #fff 20px,
+        #1e90ff 20px,
+        #1e90ff 30px,
+        #fff 30px,
+        #fff 40px
+      );
+      background-position: center;
+    }
 
-        .flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffc0cb;
-            clip-path: polygon(100% 100%, 50% 0%, 0% 100%);
-            transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
+    .envelope-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      overflow: visible;
+    }
 
-        .envelope.open .flap {
-            transform: translateY(-100%);
-        }
+    .flap {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: #fff;
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      transform-origin: top center;
+      transition: transform 1.5s ease-in-out;
+      z-index: 3;
+      border-bottom: 2px solid #ccc;
+    }
 
-        .letter {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%) translateY(100%);
-            width: 260px;
-            height: 350px;
-            background: #fff;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 1.5s ease-in-out;
-        }
+    .bottom-flap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: #fff;
+      clip-path: polygon(0 100%, 50% 0, 100% 100%);
+      border-top: 2px solid #ccc;
+      z-index: 1;
+    }
 
-        .envelope.open .letter {
-            transform: translateX(-50%) translateY(-50%);
-            opacity: 1;
-        }
+    .envelope.open .flap {
+      transform: rotateX(-180deg);
+    }
 
-        .heart {
-            color: #ff6f61;
-            font-size: 2rem;
-            animation: beat 1s infinite;
-        }
+    .letter {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 260px;
+      height: 350px;
+      background: #fdf3e7;
+      background-image: linear-gradient(#fdf3e7, #f5e6ca);
+      font-family: 'Great Vibes', cursive;
+      color: #5a3e36;
+      border: 1px solid #d2b48c;
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 0 5px rgba(0, 0, 0, 0.05);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 1.5s ease-in-out;
+      transition-delay: 0.8s;
+      z-index: 2;
+      text-align: center;
+      font-size: 1.3rem;
+    }
 
-        @keyframes beat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-        }
+    .envelope.open .letter {
+      transform: translateX(-50%) translateY(-60%) scale(1.05);
+      opacity: 1;
+    }
 
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+    .heart {
+      color: #ff6f61;
+      font-size: 2rem;
+      animation: beat 1s infinite;
+    }
 
-        .controls button {
-            padding: 10px;
-            border: none;
-            border-radius: 50%;
-            background-color: #ff6f61;
-            color: white;
-            cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-        }
+    @keyframes beat {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+    }
 
-        .controls button:hover {
-            background-color: #ff4a3b;
-        }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
 
-        .volume-slider {
-            width: 100px;
-        }
+    .controls button {
+      padding: 10px;
+      border: none;
+      border-radius: 50%;
+      background-color: #ff6f61;
+      color: white;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+    }
 
-        @media (max-width: 480px) {
-            .envelope {
-                height: 150px;
-            }
+    .controls button:hover {
+      background-color: #ff4a3b;
+    }
 
-            .controls button {
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
-            }
+    .volume-slider {
+      width: 100px;
+    }
 
-            .volume-slider {
-                width: 80px;
-            }
-        }
-    </style>
+    @media (max-width: 480px) {
+      .envelope {
+        height: 150px;
+      }
+
+      .controls button {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+
+      .volume-slider {
+        width: 80px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="envelope" onclick="openEnvelope()">
-        <div class="flap"></div>
-        <div class="letter">
-            <h2>Dear Muti,</h2>
-            <p>Write your sweet message here...</p>
-            <span class="heart">&#10084;</span>
-        </div>
+  <div class="envelope" onclick="openEnvelope()">
+    <div class="envelope-inner">
+      <div class="flap"></div>
+      <div class="bottom-flap"></div>
+      <div class="letter">
+        <h2>Dear Muti,</h2>
+        <p>
+          Gimana keadaan kamu?? cepet pulih seperti sedia kala yaa <br> 
+          Syafakillah yaa Mutia!! <br>
+          semangatt^^ <br>
+          jangan take beban di pikiran kamu sendiri yaa, keep sharing entah itu sama keluarga atau teman kamu. <br>
+          aku juga ada disini kok hihi<br><br>
+          once again, get well soon yaa!
+        </p>
+        <span class="heart">💌</span>
+      </div>
     </div>
+  </div>
 
-    <div class="controls">
-        <button id="playPauseButton" onclick="togglePlayPause()">&#9658;</button>
-        <input type="range" class="volume-slider" min="0" max="1" step="0.1" onchange="setVolume(this.value)">
-    </div>
+  <div class="controls">
+    <button id="playPauseButton" onclick="togglePlayPause()">&#9658;</button>
+    <input type="range" class="volume-slider" min="0" max="1" step="0.1" onchange="setVolume(this.value)">
+  </div>
 
-    <audio id="music" src="bgmusic.mp3.mp3" loop></audio>
-    <audio id="effect" src="click-effect.mp3"></audio>
+  <audio id="music" src="bgmusic.mp3.mp3" loop></audio>
+  <audio id="effect" src="click-effect.mp3"></audio>
 
-    <script>
-        const envelope = document.querySelector('.envelope');
-        const music = document.getElementById('music');
-        const effect = document.getElementById('effect');
-        const playPauseButton = document.getElementById('playPauseButton');
+  <script>
+    const envelope = document.querySelector('.envelope');
+    const music = document.getElementById('music');
+    const effect = document.getElementById('effect');
+    const playPauseButton = document.getElementById('playPauseButton');
 
-        // Set initial volume to 25%
-        music.volume = 0.25;
+    music.volume = 0.25;
 
-        function openEnvelope() {
-            envelope.classList.add('open');
-            effect.play();
-            music.currentTime = 178; // Start music at 3:00 (180 seconds)
-            music.play();
-            updatePlayPauseIcon();
-        }
+    function openEnvelope() {
+      envelope.classList.add('open');
+      effect.play();
+      music.currentTime = 178;
+      music.play();
+      updatePlayPauseIcon();
+    }
 
-        function togglePlayPause() {
-            if (music.paused) {
-                music.play();
-            } else {
-                music.pause();
-            }
-            updatePlayPauseIcon();
-        }
+    function togglePlayPause() {
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+      updatePlayPauseIcon();
+    }
 
-        function updatePlayPauseIcon() {
-            if (music.paused) {
-                playPauseButton.innerHTML = '&#9658;'; // Play icon
-            } else {
-                playPauseButton.innerHTML = '&#10074;&#10074;'; // Pause icon
-            }
-        }
+    function updatePlayPauseIcon() {
+      playPauseButton.innerHTML = music.paused ? '&#9658;' : '&#10074;&#10074;';
+    }
 
-        function setVolume(value) {
-            music.volume = value;
-        }
-    </script>
+    function setVolume(value) {
+      music.volume = value;
+    }
+  </script>
 </body>
 </html>
